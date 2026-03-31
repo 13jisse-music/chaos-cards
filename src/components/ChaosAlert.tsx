@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useCallback } from 'react'
 import Image from 'next/image'
 
 const CHAOS_MESSAGES: Record<string, string> = {
@@ -22,29 +22,29 @@ const CHAOS_IMAGES: Record<string, string> = {
 }
 
 export default function ChaosAlert({ effect, onDone }: { effect: string; onDone: () => void }) {
-  const [visible, setVisible] = useState(true)
+  const onDoneRef = useRef(onDone)
+  onDoneRef.current = onDone
+
+  const dismiss = useCallback(() => {
+    onDoneRef.current()
+  }, [])
 
   useEffect(() => {
     if (navigator.vibrate) {
       navigator.vibrate([200, 100, 200])
     }
-
-    const timer = setTimeout(() => {
-      setVisible(false)
-      onDone()
-    }, 2500)
-
+    const timer = setTimeout(dismiss, 2500)
     return () => clearTimeout(timer)
-  }, [effect, onDone])
-
-  if (!visible) return null
+  }, [effect, dismiss])
 
   const img = CHAOS_IMAGES[effect]
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 animate-shake">
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 animate-shake cursor-pointer"
+      onClick={dismiss}
+    >
       <div className="text-center px-4 max-w-sm">
-        {/* Image événement */}
         {img && (
           <div className="mx-auto mb-4 rounded-xl overflow-hidden shadow-2xl shadow-yellow-400/20 border border-yellow-400/30">
             <Image src={img} alt={effect} width={400} height={260} className="w-full h-auto object-cover" />
@@ -54,6 +54,8 @@ export default function ChaosAlert({ effect, onDone }: { effect: string; onDone:
         <div className="text-xl text-white font-semibold drop-shadow-lg">
           {CHAOS_MESSAGES[effect] || effect}
         </div>
+
+        <div className="text-white/30 text-xs mt-3">Tap pour fermer</div>
       </div>
     </div>
   )
