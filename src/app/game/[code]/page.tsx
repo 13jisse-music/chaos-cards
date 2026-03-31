@@ -48,10 +48,12 @@ export default function GamePage() {
     fetchData()
   }, [fetchData])
 
-  // Polling fallback pour le lobby (Realtime peut être lent)
+  // Polling fallback (Realtime peut être lent sur free tier)
   useEffect(() => {
-    if (!game || game.status !== 'waiting') return
-    const interval = setInterval(fetchData, 2000)
+    if (!game) return
+    // Lobby: poll toutes les 2s, Jeu: poll toutes les 1.5s
+    const delay = game.status === 'waiting' ? 2000 : 1500
+    const interval = setInterval(fetchData, delay)
     return () => clearInterval(interval)
   }, [game?.status, fetchData])
 

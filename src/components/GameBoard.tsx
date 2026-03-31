@@ -181,8 +181,8 @@ export default function GameBoard({ game, players, myPlayerId }: GameBoardProps)
         )}
       </div>
 
-      {/* Tuto */}
-      {showTutorial && isMyTurn && game.manche === 1 && (
+      {/* Tuto — s'affiche au premier tour de chaque joueur */}
+      {showTutorial && isMyTurn && (
         <div className="fixed inset-0 z-30 flex items-center justify-center bg-black/70" onClick={() => setShowTutorial(false)}>
           <div className="bg-[#1a1a2e] rounded-2xl p-5 mx-4 max-w-xs border border-yellow-400/30" onClick={e => e.stopPropagation()}>
             <h3 className="text-yellow-400 font-bold text-base mb-2 text-center">Comment jouer ?</h3>
