@@ -1,0 +1,84 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap');
+
+:root {
+  --background: #0f0f1a;
+  --foreground: #ffffff;
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: 'Nunito', sans-serif;
+  overflow: hidden;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+/* Animations cartes */
+@keyframes slideToCenter {
+  to {
+    transform: translate(var(--dx), var(--dy)) scale(0.7);
+    opacity: 0;
+  }
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-10px); }
+  75% { transform: translateX(10px); }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.3); }
+  50% { box-shadow: 0 0 0 8px rgba(255, 255, 255, 0); }
+}
+
+@keyframes cardDeal {
+  from {
+    transform: translateY(-100px) rotate(-10deg);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0) rotate(0);
+    opacity: 1;
+  }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+.animate-shake {
+  animation: shake 0.4s ease-in-out 3;
+}
+
+.card-playable {
+  animation: pulse-glow 2s infinite;
+}
+
+.card-playable:hover,
+.card-playable:active {
+  transform: scale(1.1) translateY(-8px);
+}
+
+.card-played {
+  animation: slideToCenter 0.3s ease-out forwards;
+}
+
+.card-deal {
+  animation: cardDeal 0.3s ease-out;
+}
+
+/* Scrollbar cachée pour la main */
+.overflow-x-auto::-webkit-scrollbar {
+  display: none;
+}
+.overflow-x-auto {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
