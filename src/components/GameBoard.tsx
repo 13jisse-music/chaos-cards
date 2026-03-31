@@ -161,18 +161,25 @@ export default function GameBoard({ game, players, myPlayerId }: GameBoardProps)
 
       {/* Ma main */}
       <div className="bg-black/50 backdrop-blur-sm border-t border-white/10 px-1 py-2 shrink-0">
-        <div className="flex gap-1.5 overflow-x-auto pb-1 justify-center">
+        <div className="flex overflow-x-auto pb-1 justify-center" style={{
+          gap: me.hand.length > 8 ? '0px' : '6px',
+          marginLeft: me.hand.length > 8 ? '10px' : '0',
+        }}>
           {me.hand.map((card, idx) => {
             const cardPlayable = isMyTurn && isPlayable(card, topCard, game.current_chaos_effect)
             return (
-              <Card
-                key={card.id + '-' + idx}
-                card={card}
-                playable={cardPlayable}
-                blind={isBlind}
-                onClick={() => handlePlayCard(idx)}
-                size="sm"
-              />
+              <div key={card.id + '-' + idx} style={{
+                marginLeft: me.hand.length > 8 && idx > 0 ? `-${Math.min(20, Math.floor(me.hand.length * 1.5))}px` : '0',
+                zIndex: idx,
+              }}>
+                <Card
+                  card={card}
+                  playable={cardPlayable}
+                  blind={isBlind}
+                  onClick={() => handlePlayCard(idx)}
+                  size="sm"
+                />
+              </div>
             )
           })}
         </div>

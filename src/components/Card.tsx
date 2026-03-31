@@ -60,7 +60,12 @@ export default function Card({ card, playable = false, blind = false, onClick, s
 
   if (blind) {
     return (
-      <div className="rounded-xl overflow-hidden shrink-0" style={{ width: w, height: h }}>
+      <div
+        onClick={playable ? onClick : undefined}
+        className={`rounded-xl overflow-hidden shrink-0 transition-all duration-200
+          ${playable ? 'cursor-pointer card-playable active:scale-95' : 'opacity-40'}`}
+        style={{ width: w, height: h }}
+      >
         <Image src="/assets/card-back.png" alt="?" width={w} height={h} className="w-full h-full object-cover rounded-xl" />
       </div>
     )
