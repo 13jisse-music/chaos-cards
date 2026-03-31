@@ -16,9 +16,13 @@ interface LobbyProps {
 export default function Lobby({ gameCode, gameId, players, myPlayerId, onStart }: LobbyProps) {
   const [copied, setCopied] = useState(false)
   const [addingBot, setAddingBot] = useState(false)
+  const [optimisticReady, setOptimisticReady] = useState<boolean | null>(null)
   const me = players.find(p => p.id === myPlayerId)
   const isHost = me?.seat_index === 0
-  const allReady = players.length >= 2 && players.every(p => p.is_ready)
+  const amIReady = optimisticReady !== null ? optimisticReady : (me?.is_ready ?? false)
+  const allReady = players.length >= 2 && players.every(p =>
+    p.id === myPlayerId ? amIReady : p.is_ready
+  )
   const hasBotAlready = players.some(p => isBotPlayer(p))
 
   async function handleAddBot() {
@@ -30,7 +34,8 @@ export default function Lobby({ gameCode, gameId, players, myPlayerId, onStart }
 
   async function toggleReady() {
     if (!me) return
-    const newReady = !me.is_ready
+    const newReady = !amIReady
+    setOptimisticReady(newReady) // UI change immédiatement
     await supabase.from('players').update({ is_ready: newReady }).eq('id', me.id)
   }
 
@@ -119,10 +124,10 @@ export default function Lobby({ gameCode, gameId, players, myPlayerId, onStart }
           <button
             onClick={toggleReady}
             className={`w-full py-2.5 rounded-xl font-bold text-base transition-all active:scale-95 ${
-              me?.is_ready ? 'bg-green-500 text-white' : 'bg-white/10 text-white border border-white/20'
+              amIReady ? 'bg-green-500 text-white' : 'bg-white/10 text-white border border-white/20'
             }`}
           >
-            {me?.is_ready ? '✓ Prêt !' : 'Je suis prêt'}
+            {amIReady ? '✓ Prêt !' : 'Je suis prêt'}
           </button>
 
           {isHost && allReady && (
