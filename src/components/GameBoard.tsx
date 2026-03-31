@@ -161,16 +161,22 @@ export default function GameBoard({ game, players, myPlayerId }: GameBoardProps)
 
       {/* Ma main */}
       <div className="bg-black/50 backdrop-blur-sm border-t border-white/10 px-1 py-2 shrink-0">
-        <div className="flex overflow-x-auto pb-1 justify-center" style={{
-          gap: me.hand.length > 8 ? '0px' : '6px',
-          marginLeft: me.hand.length > 8 ? '10px' : '0',
+        <div className="flex justify-center items-end pb-1 mx-auto" style={{
+          width: 'fit-content',
+          maxWidth: '100%',
         }}>
           {me.hand.map((card, idx) => {
             const cardPlayable = isMyTurn && isPlayable(card, topCard, game.current_chaos_effect)
+            // Calcul overlap : plus il y a de cartes, plus elles se chevauchent
+            const cardW = 55
+            const screenW = typeof window !== 'undefined' ? window.innerWidth - 16 : 360
+            const totalNeeded = me.hand.length * cardW
+            const overlap = totalNeeded > screenW ? Math.ceil((totalNeeded - screenW) / (me.hand.length - 1)) : 0
             return (
               <div key={card.id + '-' + idx} style={{
-                marginLeft: me.hand.length > 8 && idx > 0 ? `-${Math.min(20, Math.floor(me.hand.length * 1.5))}px` : '0',
+                marginLeft: idx > 0 ? `-${overlap}px` : '0',
                 zIndex: idx,
+                position: 'relative',
               }}>
                 <Card
                   card={card}
