@@ -13,7 +13,6 @@ body {
   color: var(--foreground);
   background: var(--background);
   font-family: 'Nunito', sans-serif;
-  overflow: hidden;
   -webkit-user-select: none;
   user-select: none;
 }

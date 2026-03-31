@@ -20,7 +20,7 @@ export default function Scoreboard({ players, scores, manche, finished, isHost, 
   })
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-[#0f0f1a] bg-cover bg-center bg-no-repeat p-6" style={{ backgroundImage: 'url(/assets/bg-scores.png)' }}>
+    <div className="fixed inset-0 flex flex-col items-center justify-center bg-[#0f0f1a] bg-cover bg-center bg-no-repeat p-5" style={{ backgroundImage: 'url(/assets/bg-scores.png)' }}>
       <h2 className="text-2xl font-bold text-white mb-2">
         {finished ? '🏆 Fin de partie !' : `Manche ${manche} terminée`}
       </h2>

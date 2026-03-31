@@ -48,6 +48,13 @@ export default function GamePage() {
     fetchData()
   }, [fetchData])
 
+  // Polling fallback pour le lobby (Realtime peut être lent)
+  useEffect(() => {
+    if (!game || game.status !== 'waiting') return
+    const interval = setInterval(fetchData, 2000)
+    return () => clearInterval(interval)
+  }, [game?.status, fetchData])
+
   // Détecter changement de manche pour afficher scoreboard
   useEffect(() => {
     if (game && game.manche > prevManche) {

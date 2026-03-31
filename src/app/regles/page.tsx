@@ -48,7 +48,7 @@ const RULES_SECTIONS = [
 
 export default function ReglesPage() {
   return (
-    <div className="min-h-screen bg-[#0f0f1a] bg-cover bg-center bg-no-repeat p-6 pb-20" style={{ backgroundImage: 'url(/assets/bg-rules.png)' }}>
+    <div className="min-h-screen bg-[#0f0f1a] bg-fixed bg-cover bg-center bg-no-repeat p-5 pb-20 overflow-y-auto" style={{ backgroundImage: 'url(/assets/bg-rules.png)' }}>
       <div className="max-w-lg mx-auto">
         {/* Header */}
         <div className="flex items-center gap-4 mb-8">
